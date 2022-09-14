@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Loading from '../components/Loading/Loading'
 
 import { magic } from '../lib/magic-client'
@@ -28,11 +28,11 @@ function MyApp({ Component, pageProps }) {
       setLoading(false)
     }
     router.events.on('routeChangeComplete', handleComplete)
-    router.events.on('routeChangeError', handleComplete)
+    // router.events.on('routeChangeError', handleComplete)
 
     return () => {
       router.events.off('routeChangeComplete', handleComplete)
-      router.events.off('routeChangeError', handleComplete)
+      // router.events.off('routeChangeError', handleComplete)
     }
   }, [router])
 
