@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { magic } from '../lib/magic-client'
@@ -10,6 +10,21 @@ function Login() {
   const [loading, setLoading] = useState(false)
 
   const router = useRouter()
+
+  useEffect(()=>{
+
+    const handleRouteComplete =() =>{
+      setLoading(false)
+    }
+    router.events.on('routeChangeComplete',handleRouteComplete)
+    router.events.on('routeChangeError',handleRouteComplete)
+
+    return ()=>{
+      router.events.off('routeChangeComplete',handleRouteComplete)
+      router.events.off('routeChangeError',handleRouteComplete)
+
+    }
+  },[router])
   const handleOnChangeEmail = (e) => {
     const { value } = e.target
     setEmail(value)
@@ -28,7 +43,6 @@ function Login() {
             email: email
           })
           if (didToken) {
-            setLoading(false)
             router.push('/')
           }
         } catch (error) {
