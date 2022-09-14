@@ -40,6 +40,19 @@ function NavBar() {
     setShowDropDown((prev) => !prev)
   }
 
+  const handleSignOut = async (e) => {
+    e.preventDefault()
+
+    try {
+      await magic.user.logout()
+      console.log(await magic.user.isLoggedIn()) // => `false`
+      router.push('/login')
+    } catch (error) {
+      console.log('error on sign out', error)
+      router.push('/login')
+    }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -71,9 +84,9 @@ function NavBar() {
             {showDropDown && (
               <div className={styles.dropdown}>
                 <div>
-                  <Link href='/login'>
-                    <a className={styles.linkName}>sign out</a>
-                  </Link>
+                  <a className={styles.linkName} onClick={handleSignOut}>
+                    sign out
+                  </a>
                   <div className={styles.line}></div>
                 </div>
               </div>
