@@ -4,6 +4,7 @@ import Card from '../components/Card/Card'
 import CardContainer from '../components/Card/CardContainer'
 import NavBar from '../components/NavBar/NavBar'
 import { getVideos, getPopularVideos } from '../lib/videos'
+
 import styles from '../styles/Home.module.css'
 
 export async function getServerSideProps() {
@@ -47,7 +48,7 @@ export default function Home({
       </Head>
       {/* <h1>my youtube</h1> */}
       <div className={styles.main}>
-        <NavBar username={'faraz'} />
+        <NavBar />
         <Banner title={'ridge'} subTitle={'war'} imgUrl={'/static/ridge.jpeg'} />
         <div className={styles.cardContainer}>
           <CardContainer title={'disney'} videos={disneyVideos} size={'large'} />
