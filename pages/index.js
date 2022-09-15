@@ -49,7 +49,12 @@ export default function Home({
       {/* <h1>my youtube</h1> */}
       <div className={styles.main}>
         <NavBar />
-        <Banner title={'ridge'} subTitle={'war'} imgUrl={'/static/ridge.jpeg'} />
+        <Banner
+          videoId={'5lR0pkUjzb4'}
+          title={'ridge'}
+          subTitle={'war'}
+          imgUrl={'/static/ridge.jpeg'}
+        />
         <div className={styles.cardContainer}>
           <CardContainer title={'disney'} videos={disneyVideos} size={'large'} />
           <CardContainer title={'travel'} videos={travelVideos} size={'small'} />

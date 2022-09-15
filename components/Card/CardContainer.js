@@ -10,7 +10,7 @@ function CardContainer(props) {
       <h2 className={styles.title}>{title}</h2>
       <div className={styles.cardWrapper}>
         {videos.map((item, index) => (
-          <Link key={index} href={`/video/${item.id}`}>
+          <Link key={item.id} href={`/video/${item.id}`}>
             <Card id={index} imgUrl={item.imgUrl} size={size} />
           </Link>
         ))}
