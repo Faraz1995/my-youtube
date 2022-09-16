@@ -11,7 +11,9 @@ function CardContainer(props) {
       <div className={styles.cardWrapper}>
         {videos.map((item, index) => (
           <Link key={item.id} href={`/video/${item.id}`}>
-            <Card id={index} imgUrl={item.imgUrl} size={size} />
+            <a>
+              <Card id={index} imgUrl={item.imgUrl} size={size} />
+            </a>
           </Link>
         ))}
       </div>

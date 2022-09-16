@@ -2,20 +2,12 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import Modal from 'react-modal'
 import clsx from 'classnames'
+import NavBar from '../../components/NavBar/NavBar'
 import { getVideoById } from '../../lib/videos'
 import styles from '../../styles/video.module.css'
 
-export async function getStaticProps() {
-  // const video = {
-  //   title: 'title',
-  //   publishTime: '1995-01-21',
-  //   description:
-  //     'desc...  Quo culpa saepe quos nam dolore in labore obcaecati nulla eum exercitationem sed',
-  //   channelTitle: 'channel',
-  //   viewCount: 2000
-  // }
-
-  const videoId = 'iyFe0M0zQ0g'
+export async function getStaticProps(context) {
+  const { videoId } = context.params
 
   const videoArray = await getVideoById(videoId)
 
@@ -52,10 +44,11 @@ function Video({ video }) {
 
   console.log(videoId)
 
-  const { title, publishTime, description, channelTitle, viewCount } = video
+  const { title, publishTime, description, channelTitle, statistics, viewCount } = video
 
   return (
     <div className={styles.container}>
+      <NavBar />
       <Modal
         isOpen={true}
         contentLabel='watch the video'
@@ -90,7 +83,7 @@ function Video({ video }) {
 
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
                 <span className={styles.subTitleText}>View Count: </span>
-                <span className={styles.value}>{viewCount}</span>
+                <span className={styles.value}>{statistics.viewCount}</span>
               </p>
             </div>
           </div>
