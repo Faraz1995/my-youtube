@@ -2,21 +2,53 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import Modal from 'react-modal'
 import clsx from 'classnames'
+import { getVideoById } from '../../lib/videos'
 import styles from '../../styles/video.module.css'
-function Video() {
+
+export async function getStaticProps() {
+  // const video = {
+  //   title: 'title',
+  //   publishTime: '1995-01-21',
+  //   description:
+  //     'desc...  Quo culpa saepe quos nam dolore in labore obcaecati nulla eum exercitationem sed',
+  //   channelTitle: 'channel',
+  //   viewCount: 2000
+  // }
+
+  const videoId = 'iyFe0M0zQ0g'
+
+  const videoArray = await getVideoById(videoId)
+
+  return {
+    props: {
+      video: videoArray.length > 0 ? videoArray[0] : {}
+    },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 10 seconds
+    revalidate: 10 // In seconds
+  }
+}
+
+export async function getStaticPaths() {
+  const listOfVideos = ['iyFe0M0zQ0g', 'CZ1CATNbXg0', 'rNk1Wi8SvNc']
+
+  // Get the paths we want to pre-render based on posts
+  const paths = listOfVideos.map((videoId) => ({
+    params: { videoId }
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: blocking } will server-render pages
+  // on-demand if the path doesn't exist.
+  return { paths, fallback: 'blocking' }
+}
+
+function Video({ video }) {
   Modal.setAppElement('#__next')
   const router = useRouter()
 
   const { videoId } = router.query
-
-  const video = {
-    title: 'title',
-    publishTime: '1995-01-21',
-    description:
-      'desc...  Quo culpa saepe quos nam dolore in labore obcaecati nulla eum exercitationem sed',
-    channelTitle: 'channel',
-    viewCount: 2000
-  }
 
   console.log(videoId)
 

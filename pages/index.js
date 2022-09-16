@@ -38,7 +38,6 @@ export default function Home({
       imgUrl: '/static/ridge.jpeg'
     }
   ]
-
   return (
     <div className={styles.container}>
       <Head>
@@ -50,7 +49,7 @@ export default function Home({
       <div className={styles.main}>
         <NavBar />
         <Banner
-          videoId={'5lR0pkUjzb4'}
+          videoId={'iyFe0M0zQ0g'}
           title={'ridge'}
           subTitle={'war'}
           imgUrl={'/static/ridge.jpeg'}
