@@ -11,20 +11,18 @@ function Login() {
 
   const router = useRouter()
 
-  useEffect(()=>{
-
-    const handleRouteComplete =() =>{
+  useEffect(() => {
+    const handleRouteComplete = () => {
       setLoading(false)
     }
-    router.events.on('routeChangeComplete',handleRouteComplete)
-    router.events.on('routeChangeError',handleRouteComplete)
+    router.events.on('routeChangeComplete', handleRouteComplete)
+    router.events.on('routeChangeError', handleRouteComplete)
 
-    return ()=>{
-      router.events.off('routeChangeComplete',handleRouteComplete)
-      router.events.off('routeChangeError',handleRouteComplete)
-
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteComplete)
+      router.events.off('routeChangeError', handleRouteComplete)
     }
-  },[router])
+  }, [router])
   const handleOnChangeEmail = (e) => {
     const { value } = e.target
     setEmail(value)
@@ -33,28 +31,35 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    console.log('login')
     if (email) {
-      if (email === 'faraz.mehr7195@gmail.com') {
-        console.log('route to dashboard')
-        try {
-          setLoading(true)
-          const didToken = await magic.auth.loginWithMagicLink({
-            email: email
+      try {
+        setLoading(true)
+        const didToken = await magic.auth.loginWithMagicLink({
+          email: email
+        })
+        if (didToken) {
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+              'Content-Type': 'application/json'
+            }
           })
-          if (didToken) {
+
+          const loginResponse = await response.json()
+          if (loginResponse.done) {
             router.push('/')
+          } else {
+            setLoading(false)
+            console.log('sth went wrong on email')
           }
-        } catch (error) {
-          // Handle errors if required!
-          setLoading(false)
-          console.log('sth went wrong didToken', error)
         }
-        // router.push('/')
-      } else {
+      } catch (error) {
+        // Handle errors if required!
         setLoading(false)
-        setErrorMsg('sth went wrong login')
+        console.log('sth went wrong didToken', error)
       }
+      // router.push('/')
     } else {
       setLoading(false)
       setErrorMsg('enter a valid email address')

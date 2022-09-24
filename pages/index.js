@@ -38,6 +38,7 @@ export default function Home({
       imgUrl: '/static/ridge.jpeg'
     }
   ]
+
   return (
     <div className={styles.container}>
       <Head>
