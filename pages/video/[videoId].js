@@ -49,13 +49,35 @@ function Video({ video }) {
   console.log(videoId)
 
   const { title, publishTime, description, channelTitle, statistics, viewCount } = video
-  const handleLikeToggle = () => {
-    setLike((prev) => !prev)
-    setDisLike(false)
+
+  const likeApiCall = async (favourited) => {
+    return await fetch('/api/stats', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'Application/json'
+      },
+      body: JSON.stringify({
+        videoId,
+        favourited
+      })
+    })
   }
-  const handleDislikeToggle = () => {
-    setDisLike((prev) => !prev)
+  const handleLikeToggle = async () => {
+    const prevLikeStatus = like
+    setLike(!prevLikeStatus)
+    setDisLike(false)
+
+    const response = await likeApiCall(!prevLikeStatus ? 1 : 0)
+    const data = await response.json()
+  }
+  const handleDislikeToggle = async () => {
+    const prevDisLikeStatus = like
+
+    setDisLike(!prevDisLikeStatus)
     setLike(false)
+
+    const response = await likeApiCall(!prevDisLikeStatus ? 0 : 1)
+    const data = await response.json()
   }
   return (
     <div className={styles.container}>
@@ -106,7 +128,7 @@ function Video({ video }) {
 
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
                 <span className={styles.subTitleText}>View Count: </span>
-                <span className={styles.value}>{statistics.viewCount}</span>
+                <span className={styles.value}>{viewCount}</span>
               </p>
             </div>
           </div>
