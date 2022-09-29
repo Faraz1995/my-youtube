@@ -2,20 +2,20 @@ import jwt from 'jsonwebtoken'
 import { findVideoIdByUser, insertStats, updateStats } from '../../lib/db/hasura'
 
 export default async function stats(req, res) {
-  if (req.method === 'POST') {
-    try {
-      const token = req.cookies.token
-      if (token.length === 0) {
-        res.status(403).send({})
-      } else {
-        console.log('body****', req.body)
-        const { videoId, favourited, watched = true } = req.body
-        if (videoId) {
-          const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
-          const userId = decodedToken.issuer
-          console.log(userId, 'user********')
-          const videoExists = await findVideoIdByUser(token, userId, videoId)
-          console.log('video exists', videoExists)
+  try {
+    const token = req.cookies.token
+    if (token.length === 0) {
+      res.status(403).send({})
+    } else {
+      const { videoId } = req.body
+      if (videoId) {
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+        const userId = decodedToken.issuer
+        const foundVideo = await findVideoIdByUser(token, userId, videoId)
+        const videoExists = foundVideo?.length > 0
+        if (req.method === 'POST') {
+          const { favourited, watched = true } = req.body
+
           if (videoExists) {
             try {
               //found it , update it
@@ -25,9 +25,7 @@ export default async function stats(req, res) {
                 userId,
                 videoId
               }
-              console.log('info', info)
               const response = await updateStats(token, info)
-              console.log('response', response)
               res.send({ msg: 'it works', data: response })
             } catch (error) {
               console.log('sth went wrong updating', error)
@@ -44,14 +42,19 @@ export default async function stats(req, res) {
             const response = await insertStats(token, info)
             res.send({ msg: 'it works', data: response })
           }
+        } else {
+          // get
+          if (videoExists) {
+            res.send(foundVideo)
+          } else {
+            res.status(400)
+            res.send({ msg: 'not found' })
+          }
         }
       }
-    } catch (error) {
-      res.status(500).send({ msg: error })
-      console.log('sth went wrong stat api', error)
     }
-  } else {
-    //bad request
-    res.status(400).send({ msg: 'bad request' })
+  } catch (error) {
+    res.status(500).send({ msg: error })
+    console.log('sth went wrong stat api', error)
   }
 }
