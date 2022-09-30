@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Modal from 'react-modal'
 import clsx from 'classnames'
@@ -43,6 +43,24 @@ function Video({ video }) {
   const [like, setLike] = useState(false)
   const [disLike, setDisLike] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    const getStat = async () => {
+      const response = await fetch(`/api/stats?videoId=${videoId}`, {
+        method: 'get'
+      })
+      const data = await response.json()
+      if (data.length > 0) {
+        const favourited = data[0].favourited
+        if (favourited === 1) {
+          setLike(true)
+        } else if (favourited === 0) {
+          setDisLike(true)
+        }
+      }
+    }
+    getStat()
+  }, [])
 
   const { videoId } = router.query
 
