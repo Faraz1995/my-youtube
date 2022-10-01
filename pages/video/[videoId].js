@@ -64,8 +64,6 @@ function Video({ video }) {
 
   const { videoId } = router.query
 
-  console.log(videoId)
-
   const { title, publishTime, description, channelTitle, statistics, viewCount } = video
 
   const likeApiCall = async (favourited) => {
@@ -105,7 +103,6 @@ function Video({ video }) {
         contentLabel='watch the video'
         onRequestClose={() => {
           router.back()
-          console.log('close')
         }}
         className={styles.modal}
         overlayClassName={styles.overlay}
