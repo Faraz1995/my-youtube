@@ -26,11 +26,9 @@ export default async function login(req, res) {
         process.env.JWT_SECRET
       )
 
-      console.log({ token })
       const isNewUserQuery = await isNewUser(token, metadata.issuer)
-      isNewUserQuery && await createNewUser(token, metadata)
+      isNewUserQuery && (await createNewUser(token, metadata))
       const cookie = setTokenCookie(token, res)
-      console.log('coookie', cookie)
       res.send({ done: true })
     } catch (error) {
       console.log('sth went wrong login api*****', error)
