@@ -3,27 +3,39 @@ import Banner from '../components/Banner/Banner'
 import Card from '../components/Card/Card'
 import CardContainer from '../components/Card/CardContainer'
 import NavBar from '../components/NavBar/NavBar'
-import { getVideos, getPopularVideos } from '../lib/videos'
+import { getVideos, getPopularVideos, fetchWatchedVideos } from '../lib/videos'
+import { verifyToken } from '../lib/utils'
 
 import styles from '../styles/Home.module.css'
+import redirectUser from '../utils/redirectUser'
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const { userId, token } = await redirectUser(context)
+
   const disneyVideos = await getVideos('disney trailer')
   const productivityVideos = await getVideos('productivity')
   const travelVideos = await getVideos('travel')
   const popularVideos = await getPopularVideos('')
+  const watchedAgainVidoes = await fetchWatchedVideos(userId, token)
 
-  return { props: { disneyVideos, productivityVideos, travelVideos, popularVideos } }
+  return {
+    props: {
+      disneyVideos,
+      productivityVideos,
+      travelVideos,
+      popularVideos,
+      watchedAgainVidoes
+    }
+  }
 }
 // const key = AIzaSyAjJ4qNerU5yPdMYYGx3IXFOdsr8VkUTV4
 export default function Home({
   disneyVideos,
   productivityVideos,
   travelVideos,
-  popularVideos
+  popularVideos,
+  watchedAgainVidoes = []
 }) {
-  console.log({ disneyVideos })
-
   const test = [
     {
       imgUrl: '/static/ridge.jpeg'
@@ -57,6 +69,11 @@ export default function Home({
         />
         <div className={styles.cardContainer}>
           <CardContainer title={'disney'} videos={disneyVideos} size={'large'} />
+          <CardContainer
+            title={'watch it again'}
+            videos={watchedAgainVidoes}
+            size={'medium'}
+          />
           <CardContainer title={'travel'} videos={travelVideos} size={'small'} />
           <CardContainer
             title={'Productivity'}
