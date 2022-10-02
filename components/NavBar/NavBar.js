@@ -33,7 +33,7 @@ function NavBar() {
   }
   const goToMyList = (e) => {
     e.preventDefault()
-    router.push('/browse/my-list')
+    router.push('/my-list')
   }
 
   const handleDropDown = (e) => {
