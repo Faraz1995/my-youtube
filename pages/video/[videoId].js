@@ -87,7 +87,7 @@ function Video({ video }) {
     const data = await response.json()
   }
   const handleDislikeToggle = async () => {
-    const prevDisLikeStatus = like
+    const prevDisLikeStatus = disLike
 
     setDisLike(!prevDisLikeStatus)
     setLike(false)
