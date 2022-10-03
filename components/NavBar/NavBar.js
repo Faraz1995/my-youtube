@@ -8,15 +8,17 @@ import styles from './navbar.module.css'
 function NavBar() {
   const [showDropDown, setShowDropDown] = useState(false)
   const [username, setUsername] = useState('')
+  const [didToken, setDidToken] = useState('')
   const router = useRouter()
 
   useEffect(() => {
     const getUserFromMagic = async () => {
       try {
         const { email, publicAddress } = await magic.user.getMetadata()
-        const didToken = await magic.user.getIdToken()
+        const didTokenMagic = await magic.user.getIdToken()
         if (email) {
           setUsername(email)
+          setDidToken(didTokenMagic)
         }
       } catch (error) {
         console.log('error on getting email', error)
@@ -41,15 +43,21 @@ function NavBar() {
     setShowDropDown((prev) => !prev)
   }
 
-  const handleSignOut = async (e) => {
+  const handleSignout = async (e) => {
     e.preventDefault()
 
     try {
-      await magic.user.logout()
-      console.log(await magic.user.isLoggedIn()) // => `false`
-      router.push('/login')
+      const response = await fetch('/api/logout', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const res = await response.json()
     } catch (error) {
-      console.log('error on sign out', error)
+      console.error('Error logging out', error)
       router.push('/login')
     }
   }
@@ -85,7 +93,7 @@ function NavBar() {
             {showDropDown && (
               <div className={styles.dropdown}>
                 <div>
-                  <a className={styles.linkName} onClick={handleSignOut}>
+                  <a className={styles.linkName} onClick={handleSignout}>
                     sign out
                   </a>
                   <div className={styles.line}></div>
