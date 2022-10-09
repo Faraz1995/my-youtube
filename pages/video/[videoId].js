@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Modal from 'react-modal'
+import Head from 'next/head'
 import clsx from 'classnames'
 import NavBar from '../../components/NavBar/NavBar'
 import { getVideoById } from '../../lib/videos'
-import styles from '../../styles/video.module.css'
 import Like from '../../components/icons/Like'
 import DisLike from '../../components/icons/DisLike'
+import styles from '../../styles/video.module.css'
 
 export async function getStaticProps(context) {
   const { videoId } = context.params
@@ -39,7 +39,6 @@ export async function getStaticPaths() {
 }
 
 function Video({ video }) {
-  Modal.setAppElement('#__next')
   const [like, setLike] = useState(false)
   const [disLike, setDisLike] = useState(false)
   const router = useRouter()
@@ -96,17 +95,12 @@ function Video({ video }) {
     const data = await response.json()
   }
   return (
-    <div className={styles.container}>
+    <div>
+      <Head>
+        <title>{title}</title>
+      </Head>
       <NavBar />
-      <Modal
-        isOpen={true}
-        contentLabel='watch the video'
-        onRequestClose={() => {
-          router.back()
-        }}
-        className={styles.modal}
-        overlayClassName={styles.overlay}
-      >
+      <div className={styles.container}>
         <iframe
           className={styles.videoPlayer}
           id='ytplayer'
@@ -128,8 +122,8 @@ function Video({ video }) {
             </div>
           </button>
         </div>
-        <div className={styles.modalBody}>
-          <div className={styles.modalBodyContent}>
+        <div className={styles.videoBody}>
+          <div className={styles.videoBodyContent}>
             <div className={styles.descContainer}>
               <p className={styles.publishTime}>{publishTime}</p>
               <p className={styles.title}>{title}</p>
@@ -148,7 +142,7 @@ function Video({ video }) {
             </div>
           </div>
         </div>
-      </Modal>
+      </div>
     </div>
   )
 }
