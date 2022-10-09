@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken'
 import { findVideoIdByUser, insertStats, updateStats } from '../../lib/db/hasura'
 import { verifyToken } from '../../lib/utils'
 
