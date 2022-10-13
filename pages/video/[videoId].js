@@ -67,6 +67,8 @@ function Video({ video }) {
 
   const countStat = viewCount ? viewCount : statistics?.viewCount
 
+  console.log('connst stattt', viewCount, statistics)
+
   const likeApiCall = async (favourited) => {
     return await fetch('/api/stats', {
       method: 'POST',
