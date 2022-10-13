@@ -67,8 +67,6 @@ function Video({ video }) {
 
   const countStat = viewCount ? viewCount : statistics?.viewCount
 
-  console.log('connst stattt', viewCount, statistics)
-
   const likeApiCall = async (favourited) => {
     return await fetch('/api/stats', {
       method: 'POST',
@@ -155,7 +153,7 @@ function Video({ video }) {
 
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
                 <span className={styles.subTitleText}>View Count: </span>
-                {/* <span className={styles.value}>{formatCount(countStat)}</span> */}
+                <span className={styles.value}>{countStat}</span>
               </p>
             </div>
           </div>
