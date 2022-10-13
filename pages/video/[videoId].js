@@ -103,7 +103,7 @@ function Video({ video }) {
   }
 
   const formatCount = (num) => {
-    var num = num.toString().split('.')
+    var num = num?.toString().split('.')
     num[0] = num[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,')
     if (num[1]) {
       num[1] = num[1].replace(/(\d{3})/g, '$1 ')
