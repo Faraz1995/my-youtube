@@ -67,7 +67,14 @@ function NavBar() {
       <div className={styles.wrapper}>
         <Link href='/'>
           <a className={styles.logoLink}>
-            <div className={styles.logo}>logo </div>
+            <div className={styles.logo}>
+              <Image
+                src='/static/logo.png'
+                alt='my youtube logo'
+                width='130px'
+                height='30px'
+              />
+            </div>
           </a>
         </Link>
         <ul className={styles.navItems}>
