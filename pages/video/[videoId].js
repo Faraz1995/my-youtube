@@ -102,14 +102,16 @@ function Video({ video }) {
     return jsDate.toLocaleDateString()
   }
 
-  const formatCount = (num) => {
-    var num = num?.toString().split('.')
+  const formatCount = (count) => {
+    const num = count?.toString().split('.')
     num[0] = num[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,')
     if (num[1]) {
       num[1] = num[1].replace(/(\d{3})/g, '$1 ')
     }
     return num.join('.')
   }
+
+  console.log('count stat', countStat)
   return (
     <div>
       <Head>
@@ -153,7 +155,7 @@ function Video({ video }) {
 
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
                 <span className={styles.subTitleText}>View Count: </span>
-                <span className={styles.value}>{countStat}</span>
+                <span className={styles.value}>countsssss{countStat}</span>
               </p>
             </div>
           </div>
