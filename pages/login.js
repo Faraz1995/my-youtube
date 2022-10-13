@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
+import Image from 'next/image'
+
 import { useRouter } from 'next/router'
 import { magic } from '../lib/magic-client'
 
@@ -74,7 +76,14 @@ function Login() {
       <header className={styles.header}>
         <div className={styles.headerWrapper}>
           <a className={styles.logoLink}>
-            <div className={styles.logo}>logo </div>
+            <div className={styles.logo}>
+              <Image
+                src='/static/logo.png'
+                alt='my youtube logo'
+                width='130px'
+                height='30px'
+              />
+            </div>
           </a>
         </div>
       </header>
