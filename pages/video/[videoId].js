@@ -65,6 +65,8 @@ function Video({ video }) {
 
   const { title, publishTime, description, channelTitle, statistics, viewCount } = video
 
+  const countStat = viewCount ? viewCount : statistics?.viewCount
+
   const likeApiCall = async (favourited) => {
     return await fetch('/api/stats', {
       method: 'POST',
@@ -93,6 +95,20 @@ function Video({ video }) {
 
     const response = await likeApiCall(!prevDisLikeStatus ? 0 : 1)
     const data = await response.json()
+  }
+
+  const formatDate = (date) => {
+    const jsDate = new Date(date)
+    return jsDate.toLocaleDateString()
+  }
+
+  const formatCount = (num) => {
+    var num = num.toString().split('.')
+    num[0] = num[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+    if (num[1]) {
+      num[1] = num[1].replace(/(\d{3})/g, '$1 ')
+    }
+    return num.join('.')
   }
   return (
     <div>
@@ -125,7 +141,7 @@ function Video({ video }) {
         <div className={styles.videoBody}>
           <div className={styles.videoBodyContent}>
             <div className={styles.descContainer}>
-              <p className={styles.publishTime}>{publishTime}</p>
+              <p className={styles.publishTime}>{formatDate(publishTime)}</p>
               <p className={styles.title}>{title}</p>
               <p className={styles.description}>{description}</p>
             </div>
@@ -137,7 +153,7 @@ function Video({ video }) {
 
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
                 <span className={styles.subTitleText}>View Count: </span>
-                <span className={styles.value}>{viewCount}</span>
+                <span className={styles.value}>{formatCount(countStat)}</span>
               </p>
             </div>
           </div>
