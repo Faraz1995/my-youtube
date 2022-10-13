@@ -153,7 +153,7 @@ function Video({ video }) {
 
               <p className={clsx(styles.subText, styles.subTextWrapper)}>
                 <span className={styles.subTitleText}>View Count: </span>
-                <span className={styles.value}>{formatCount(countStat)}</span>
+                {/* <span className={styles.value}>{formatCount(countStat)}</span> */}
               </p>
             </div>
           </div>
