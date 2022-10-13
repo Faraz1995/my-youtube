@@ -103,9 +103,7 @@ function Video({ video }) {
   }
 
   const formatCount = (count) => {
-    console.log(count)
     const num = count?.toString().split('.')
-    console.log('numArr', num)
     num[0] = num[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,')
     if (num[1]) {
       num[1] = num[1].replace(/(\d{3})/g, '$1 ')
@@ -113,7 +111,6 @@ function Video({ video }) {
     return num.join('.')
   }
 
-  console.log('count stat', countStat)
   return (
     <div>
       <Head>
